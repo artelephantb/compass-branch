@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1fm3lvqkkue0"]
+
+[ext_resource type="Script" uid="uid://cghijiynbd4vp" path="res://scripts/world.gd" id="1_nnsk1"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_nnsk1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 256.0
+
+[node name="FrameSlider" type="HSlider" parent="."]
+offset_left = -318.0
+offset_top = 282.0
+offset_right = 557.0
+offset_bottom = 298.0
+max_value = 0.0
+editable = false
+
+[node name="Replay" type="Button" parent="."]
+offset_left = -556.0
+offset_top = 275.0
+offset_right = -496.0
+offset_bottom = 306.0
+text = "Replay"
+
+[node name="Record" type="Button" parent="."]
+offset_left = -477.0
+offset_top = 275.0
+offset_right = -349.0
+offset_bottom = 306.0
+text = "Start Recording"
+
+[connection signal="text_changed" from="TextEdit" to="." method="_on_text_box_edited"]
+[connection signal="drag_started" from="FrameSlider" to="." method="_on_frame_slider_drag_started"]
+[connection signal="value_changed" from="FrameSlider" to="." method="_on_frame_slider_value_changed"]
+[connection signal="pressed" from="Replay" to="." method="_on_replay_pressed"]
+[connection signal="pressed" from="Record" to="." method="_on_record_pressed"]
