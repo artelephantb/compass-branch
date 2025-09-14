@@ -4,11 +4,14 @@ extends Node2D
 @onready var frame_slider = $'FrameSlider'
 @onready var replay_button = $'ReplayButton'
 @onready var record_button = $'RecordButton'
+@onready var plays_timer_toggle  = $'PlaysTimerToggle'
 @onready var export_dialog  = $'ExportDialog'
 @onready var import_dialog  = $'ImportDialog'
 
 var text_logs = []
 var timed_text_logs = []
+
+var plays_timer = false
 
 var replaying = false
 
@@ -38,7 +41,11 @@ func _process(delta: float) -> void:
 		record_button.disabled = false
 
 		record_button.text = 'Stop Recording' if recording else 'Start Recording'
-		wait_frames += 1
+		if recording:
+			wait_frames += 1
+		else:
+			wait_frames = 0
+		print(wait_frames)
 		return
 	replay_button.disabled = true
 	record_button.disabled = true
@@ -47,7 +54,11 @@ func _process(delta: float) -> void:
 		replaying = false
 		return
 
-	var current_character = text_logs[frame_slider.value + 1]
+	var current_character = ''
+	if plays_timer:
+		current_character = timed_text_logs[frame_slider.value + 1]
+	else:
+		current_character = text_logs[frame_slider.value + 1]
 
 	if typeof(current_character) == TYPE_STRING:
 		text_box.text = current_character
@@ -90,7 +101,7 @@ func _on_save_pressed() -> void:
 
 func _on_export_dialog_file_selected(path: String) -> void:
 	var saved_file = FileAccess.open(path, FileAccess.WRITE)
-	saved_file.store_string(str(text_logs))
+	saved_file.store_string(str([text_logs, timed_text_logs]))
 
 func _on_import_button_pressed() -> void:
 	recording = false
@@ -99,11 +110,22 @@ func _on_import_button_pressed() -> void:
 
 func _on_import_dialog_file_selected(path: String) -> void:
 	var read_file = FileAccess.open(path, FileAccess.READ)
-	var file_content = read_file.get_as_text()
-	text_logs = str_to_var(file_content)
+	var file_content = str_to_var(read_file.get_as_text())
+	text_logs = file_content[0]
+	timed_text_logs = file_content[1]
+	
+	plays_timer = false
+	plays_timer_toggle.toggle_mode = false
 
 	frame_slider.max_value = len(text_logs) - 1
 	frame_slider.editable = true
+
+func _on_plays_timer_toggled(toggled_on: bool) -> void:
+	plays_timer = toggled_on
+	if plays_timer:
+		frame_slider.max_value = len(timed_text_logs) - 1
+	else:
+		frame_slider.max_value = len(text_logs) - 1
 
 func _on_frame_slider_drag_started() -> void:
 	if replaying:
@@ -113,7 +135,12 @@ func _on_frame_slider_value_changed(value: float) -> void:
 	if replaying:
 		return
 
-	var current_character = text_logs[value]
+	var current_character = ''
+	if plays_timer:
+		current_character = timed_text_logs[value]
+	else:
+		current_character = text_logs[value]
+
 	if typeof(current_character) == TYPE_STRING:
 		text_box.text = current_character
 

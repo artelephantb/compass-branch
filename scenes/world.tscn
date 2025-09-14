@@ -49,6 +49,13 @@ offset_right = 552.0
 offset_bottom = 306.0
 text = "Import"
 
+[node name="PlaysTimerToggle" type="CheckButton" parent="."]
+offset_left = -42.0
+offset_top = 296.0
+offset_right = 51.0
+offset_bottom = 327.0
+text = "Timer"
+
 [node name="ExportDialog" type="FileDialog" parent="."]
 title = "Save Text Recording"
 access = 1
@@ -69,5 +76,6 @@ use_native_dialog = true
 [connection signal="pressed" from="RecordButton" to="." method="_on_record_pressed"]
 [connection signal="pressed" from="SaveButton" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="toggled" from="PlaysTimerToggle" to="." method="_on_plays_timer_toggled"]
 [connection signal="file_selected" from="ExportDialog" to="." method="_on_export_dialog_file_selected"]
 [connection signal="file_selected" from="ImportDialog" to="." method="_on_import_dialog_file_selected"]
