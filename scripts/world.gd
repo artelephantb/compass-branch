@@ -2,18 +2,21 @@ extends Node2D
 
 @onready var text_box = $'TextEdit'
 @onready var frame_slider = $'FrameSlider'
-@onready var replay_button = $'Replay'
-@onready var record_button = $'Record'
+@onready var replay_button = $'ReplayButton'
+@onready var record_button = $'RecordButton'
+@onready var export_dialog  = $'ExportDialog'
+@onready var import_dialog  = $'ImportDialog'
 
-@onready var text_logs = []
-@onready var timed_text_logs = []
+var text_logs = []
+var timed_text_logs = []
 
-@onready var replaying = false
+var replaying = false
 
-@onready var wait_frames = 0
-@onready var current_wait_frame = 0
+var wait_frames = 0
+var current_wait_frame = 0
 
-@onready var recording = false
+var recording = false
+
 
 func replay() -> void:
 	current_wait_frame = 0
@@ -24,6 +27,7 @@ func replay() -> void:
 	replaying = true
 
 	recording = false
+
 
 func _ready() -> void:
 	pass
@@ -58,6 +62,7 @@ func _process(delta: float) -> void:
 	if current_wait_frame == 0:
 		frame_slider.value += 1
 
+
 func _on_text_box_edited() -> void:
 	if !recording:
 		return
@@ -77,6 +82,28 @@ func _on_record_pressed() -> void:
 	else:
 		frame_slider.max_value = len(text_logs) - 1
 		frame_slider.editable = true
+
+func _on_save_pressed() -> void:
+	recording = false
+	replaying = false
+	export_dialog.popup()
+
+func _on_export_dialog_file_selected(path: String) -> void:
+	var saved_file = FileAccess.open(path, FileAccess.WRITE)
+	saved_file.store_string(str(text_logs))
+
+func _on_import_button_pressed() -> void:
+	recording = false
+	replaying = false
+	import_dialog.popup()
+
+func _on_import_dialog_file_selected(path: String) -> void:
+	var read_file = FileAccess.open(path, FileAccess.READ)
+	var file_content = read_file.get_as_text()
+	text_logs = str_to_var(file_content)
+
+	frame_slider.max_value = len(text_logs) - 1
+	frame_slider.editable = true
 
 func _on_frame_slider_drag_started() -> void:
 	if replaying:

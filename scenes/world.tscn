@@ -16,27 +16,58 @@ offset_bottom = 256.0
 [node name="FrameSlider" type="HSlider" parent="."]
 offset_left = -318.0
 offset_top = 282.0
-offset_right = 557.0
+offset_right = 412.0
 offset_bottom = 298.0
 max_value = 0.0
 editable = false
 
-[node name="Replay" type="Button" parent="."]
+[node name="ReplayButton" type="Button" parent="."]
 offset_left = -556.0
 offset_top = 275.0
 offset_right = -496.0
 offset_bottom = 306.0
 text = "Replay"
 
-[node name="Record" type="Button" parent="."]
+[node name="RecordButton" type="Button" parent="."]
 offset_left = -477.0
 offset_top = 275.0
 offset_right = -349.0
 offset_bottom = 306.0
 text = "Start Recording"
 
+[node name="SaveButton" type="Button" parent="."]
+offset_left = 430.0
+offset_top = 275.0
+offset_right = 474.0
+offset_bottom = 306.0
+text = "Save"
+
+[node name="ImportButton" type="Button" parent="."]
+offset_left = 490.0
+offset_top = 275.0
+offset_right = 552.0
+offset_bottom = 306.0
+text = "Import"
+
+[node name="ExportDialog" type="FileDialog" parent="."]
+title = "Save Text Recording"
+access = 1
+filters = PackedStringArray("*.trec", "*.textrecord")
+use_native_dialog = true
+
+[node name="ImportDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 1
+use_native_dialog = true
+
 [connection signal="text_changed" from="TextEdit" to="." method="_on_text_box_edited"]
 [connection signal="drag_started" from="FrameSlider" to="." method="_on_frame_slider_drag_started"]
 [connection signal="value_changed" from="FrameSlider" to="." method="_on_frame_slider_value_changed"]
-[connection signal="pressed" from="Replay" to="." method="_on_replay_pressed"]
-[connection signal="pressed" from="Record" to="." method="_on_record_pressed"]
+[connection signal="pressed" from="ReplayButton" to="." method="_on_replay_pressed"]
+[connection signal="pressed" from="RecordButton" to="." method="_on_record_pressed"]
+[connection signal="pressed" from="SaveButton" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="file_selected" from="ExportDialog" to="." method="_on_export_dialog_file_selected"]
+[connection signal="file_selected" from="ImportDialog" to="." method="_on_import_dialog_file_selected"]
