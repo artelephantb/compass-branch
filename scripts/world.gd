@@ -5,8 +5,9 @@ extends Node2D
 @onready var replay_button = $'ReplayButton'
 @onready var record_button = $'RecordButton'
 @onready var plays_timer_toggle  = $'PlaysTimerToggle'
-@onready var export_dialog  = $'ExportDialog'
-@onready var import_dialog  = $'ImportDialog'
+@onready var export_dialog = $'ExportDialog'
+@onready var import_dialog = $'ImportDialog'
+@onready var render_button = $'RenderButton'
 
 var text_logs = []
 var timed_text_logs = []
@@ -20,6 +21,8 @@ var current_wait_frame = 0
 
 var recording = false
 
+var rendering = false
+
 
 func replay() -> void:
 	current_wait_frame = 0
@@ -32,6 +35,10 @@ func replay() -> void:
 	replaying = true
 
 	recording = false
+
+func get_screenshot():
+	var screenshot = get_viewport().get_texture().get_image()
+	return screenshot
 
 
 func _ready() -> void:
@@ -62,6 +69,9 @@ func _process(delta: float) -> void:
 	else:
 		current_character = text_logs[frame_slider.value + 1]
 
+	if rendering:
+		get_screenshot().save_png('user://' + str(frame_slider.value) + '_' + str(current_wait_frame) + '.png')
+
 	if typeof(current_character) == TYPE_STRING:
 		text_box.text = current_character
 		frame_slider.value += 1
@@ -74,7 +84,6 @@ func _process(delta: float) -> void:
 	current_wait_frame -= 1
 	if current_wait_frame == 0:
 		frame_slider.value += 1
-
 
 func _on_text_box_edited() -> void:
 	if !recording:
@@ -123,6 +132,10 @@ func _on_import_dialog_file_selected(path: String) -> void:
 
 	frame_slider.max_value = len(text_logs) - 1
 	frame_slider.editable = true
+
+func _on_render_pressed() -> void:
+	rendering = true
+	render_button.disabled = true
 
 func _on_plays_timer_toggled(toggled_on: bool) -> void:
 	plays_timer = toggled_on

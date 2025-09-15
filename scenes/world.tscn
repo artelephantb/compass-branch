@@ -50,6 +50,13 @@ offset_right = 552.0
 offset_bottom = 306.0
 text = "Import"
 
+[node name="RenderButton" type="Button" parent="."]
+offset_left = -567.0
+offset_top = 218.0
+offset_right = -472.0
+offset_bottom = 249.0
+text = "Render"
+
 [node name="PlaysTimerToggle" type="CheckButton" parent="."]
 offset_left = -46.5
 offset_top = 296.0
@@ -78,6 +85,7 @@ use_native_dialog = true
 [connection signal="pressed" from="RecordButton" to="." method="_on_record_pressed"]
 [connection signal="pressed" from="SaveButton" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="RenderButton" to="." method="_on_render_pressed"]
 [connection signal="toggled" from="PlaysTimerToggle" to="." method="_on_plays_timer_toggled"]
 [connection signal="file_selected" from="ExportDialog" to="." method="_on_export_dialog_file_selected"]
 [connection signal="file_selected" from="ImportDialog" to="." method="_on_import_dialog_file_selected"]
