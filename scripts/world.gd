@@ -25,6 +25,8 @@ func replay() -> void:
 	current_wait_frame = 0
 	wait_frames = 0
 
+	text_box.editable = false
+
 	text_box.text = ''
 	frame_slider.value = 0.0
 	replaying = true
@@ -51,6 +53,7 @@ func _process(delta: float) -> void:
 
 	if frame_slider.value == frame_slider.max_value:
 		replaying = false
+		text_box.editable = true
 		return
 
 	var current_character = ''
@@ -96,6 +99,7 @@ func _on_record_pressed() -> void:
 func _on_save_pressed() -> void:
 	recording = false
 	replaying = false
+	text_box.editable = true
 	export_dialog.popup()
 
 func _on_export_dialog_file_selected(path: String) -> void:
@@ -105,6 +109,7 @@ func _on_export_dialog_file_selected(path: String) -> void:
 func _on_import_button_pressed() -> void:
 	recording = false
 	replaying = false
+	text_box.editable = true
 	import_dialog.popup()
 
 func _on_import_dialog_file_selected(path: String) -> void:
@@ -129,6 +134,7 @@ func _on_plays_timer_toggled(toggled_on: bool) -> void:
 func _on_frame_slider_drag_started() -> void:
 	if replaying:
 		replaying = false
+		text_box.editable = true
 
 func _on_frame_slider_value_changed(value: float) -> void:
 	if replaying:

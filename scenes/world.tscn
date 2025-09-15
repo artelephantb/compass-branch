@@ -12,6 +12,7 @@ offset_left = -576.0
 offset_top = -324.0
 offset_right = 576.0
 offset_bottom = 256.0
+context_menu_enabled = false
 
 [node name="FrameSlider" type="HSlider" parent="."]
 offset_left = -318.0
@@ -50,9 +51,9 @@ offset_bottom = 306.0
 text = "Import"
 
 [node name="PlaysTimerToggle" type="CheckButton" parent="."]
-offset_left = -42.0
+offset_left = -46.5
 offset_top = 296.0
-offset_right = 51.0
+offset_right = 46.5
 offset_bottom = 327.0
 text = "Timer"
 
@@ -67,6 +68,7 @@ title = "Open a File"
 ok_button_text = "Open"
 file_mode = 0
 access = 1
+filters = PackedStringArray("*.trec", "*.textrecord")
 use_native_dialog = true
 
 [connection signal="text_changed" from="TextEdit" to="." method="_on_text_box_edited"]
