@@ -45,7 +45,6 @@ func _process(delta: float) -> void:
 			wait_frames += 1
 		else:
 			wait_frames = 0
-		print(wait_frames)
 		return
 	replay_button.disabled = true
 	record_button.disabled = true
@@ -115,7 +114,7 @@ func _on_import_dialog_file_selected(path: String) -> void:
 	timed_text_logs = file_content[1]
 	
 	plays_timer = false
-	plays_timer_toggle.toggle_mode = false
+	plays_timer_toggle.button_pressed = false
 
 	frame_slider.max_value = len(text_logs) - 1
 	frame_slider.editable = true
